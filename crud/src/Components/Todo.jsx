@@ -9,7 +9,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import EditSquareIcon from "@mui/icons-material/EditSquare";
 
 import { useContext, useState } from "react";
-import { TodosContext } from "../Contexts/TodoContext";
+import { TodosContext } from "../Contexts/todoContext";
 
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";

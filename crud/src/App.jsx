@@ -1,7 +1,7 @@
 import TodoList from "./Components/TodoList";
 import "./App.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { TodosContext } from "./Contexts/TodoContext";
+import { TodosContext } from "./Contexts/todoContext";
 import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
 import MySnackBar from "./Components/MySnackBar";

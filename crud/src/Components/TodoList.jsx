@@ -22,7 +22,7 @@ import Todo from "./Todo";
 import Grid from "@mui/material/Grid";
 import { useContext } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { TodosContext } from "../Contexts/TodoContext";
+import { TodosContext } from "../Contexts/todoContext";
 import { ToastContext } from "../Contexts/ToastContext";
 import { useState, useEffect, useMemo } from "react";
 
