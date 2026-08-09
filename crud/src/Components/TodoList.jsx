@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import * as React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
@@ -23,22 +22,28 @@ import Todo from "./Todo";
 import Grid from "@mui/material/Grid";
 import { useContext } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { TodosContext } from "../Contexts/todoContext";
-import { useState, useEffect } from "react";
+import { TodosContext } from "../Contexts/TodoContext";
+import { ToastContext } from "../Contexts/ToastContext";
+import { useState, useEffect, useMemo } from "react";
 
 export default function TodoList() {
   const { todos, setTodos } = useContext(TodosContext);
+  const { showHideToast } = useContext(ToastContext);
 
   const [titleInput, setTitleInput] = useState("");
   const [displayedTodoType, setDisplayedTodoType] = useState("all");
 
-  const completedTodos = todos.filter((t) => {
-    return t.isCompleted;
-  });
+  const completedTodos = useMemo(() => {
+    return todos.filter((t) => {
+      return t.isCompleted;
+    });
+  }, [todos]);
 
-  const notCompletedTodos = todos.filter((t) => {
-    return !t.isCompleted;
-  });
+  const notCompletedTodos = useMemo(() => {
+    return todos.filter((t) => {
+      return !t.isCompleted;
+    });
+  }, [todos]);
 
   let todosToBeRendered = todos;
   if (displayedTodoType === "completed") {
@@ -58,6 +63,7 @@ export default function TodoList() {
   useEffect(() => {
     const storageTodos = JSON.parse(localStorage.getItem("todos")) ?? [];
     setTodos(storageTodos);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const changeDisplayedType = (e) => {
@@ -74,6 +80,7 @@ export default function TodoList() {
     setTodos([...todos, newTodo]);
     localStorage.setItem("todos", JSON.stringify(updatedTodos));
     setTitleInput("");
+    showHideToast("تم اضافه مهمه جديد بنجاح");
   };
 
   return (

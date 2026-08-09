@@ -1,9 +1,12 @@
 import TodoList from "./Components/TodoList";
 import "./App.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { TodosContext } from "./Contexts/todoContext";
+import { TodosContext } from "./Contexts/TodoContext";
 import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
+import MySnackBar from "./Components/MySnackBar";
+import React from "react";
+import { ToastContext } from "./Contexts/ToastContext";
 const theme = createTheme({
   typography: {
     fontFamily: ["Alexandria"],
@@ -14,7 +17,6 @@ const theme = createTheme({
     },
   },
 });
-
 
 const initialTodos = [
   {
@@ -37,24 +39,37 @@ const initialTodos = [
   },
 ];
 function App() {
-    const [todos, setTodos] = useState(initialTodos);
+  const [todos, setTodos] = useState(initialTodos);
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
+
+  function showHideToast(message) {
+    setOpen(true);
+    setMessage(message);
+    setTimeout(() => {
+      setOpen(false);
+    }, 2000);
+  }
   return (
     <ThemeProvider theme={theme}>
-    <div
-      className="App"
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        backgroundColor: "#191b1f",
-        direction: "rtl",
-      }}
-    >
-      <TodosContext.Provider value={{ todos, setTodos }}>
-      <TodoList />
-      </TodosContext.Provider>
-    </div>
+      <ToastContext.Provider value={{ showHideToast }}>
+        <div
+          className="App"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+            backgroundColor: "#191b1f",
+            direction: "rtl",
+          }}
+        >
+          <MySnackBar open={open} message={message} />
+          <TodosContext.Provider value={{ todos, setTodos }}>
+            <TodoList />
+          </TodosContext.Provider>
+        </div>
+      </ToastContext.Provider>
     </ThemeProvider>
   );
 }

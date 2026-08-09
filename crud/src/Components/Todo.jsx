@@ -9,7 +9,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import EditSquareIcon from "@mui/icons-material/EditSquare";
 
 import { useContext, useState } from "react";
-import { TodosContext } from "../Contexts/todoContext";
+import { TodosContext } from "../Contexts/TodoContext";
 
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -17,7 +17,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
-
+import { ToastContext } from "../Contexts/ToastContext";
 import TextField from "@mui/material/TextField";
 // eslint-disable-next-line no-unused-vars
 export default function Todo({ todo, handleCheck }) {
@@ -28,7 +28,7 @@ export default function Todo({ todo, handleCheck }) {
     details: todo.details,
   });
   const { todos, setTodos } = useContext(TodosContext);
-
+  const { showHideToast } = useContext(ToastContext);
   function handleCheckClick() {
     const updatedTodos = todos.map((t) => {
       if (t.id == todo.id) {
@@ -39,6 +39,7 @@ export default function Todo({ todo, handleCheck }) {
 
     setTodos(updatedTodos);
     localStorage.setItem("todos", JSON.stringify(updatedTodos));
+    showHideToast("تم التعديل بنجاح");
   }
   function handleDeleteClick() {
     setShowDeleteDialog(true);
@@ -59,6 +60,7 @@ export default function Todo({ todo, handleCheck }) {
     });
     setTodos(updatedTodos);
     localStorage.setItem("todos", JSON.stringify(updatedTodos));
+    showHideToast("تم الحذف بنجاح");
   }
   function handleUpdateConfirm() {
     const updatedTodos = todos.map((t) => {
@@ -71,6 +73,7 @@ export default function Todo({ todo, handleCheck }) {
     setTodos(updatedTodos);
     setShowUpdateDialog(false);
     localStorage.setItem("todos", JSON.stringify(updatedTodos));
+    showHideToast("تم التحديث بنجاح");
   }
 
   return (
@@ -155,7 +158,13 @@ export default function Todo({ todo, handleCheck }) {
         <CardContent>
           <Grid container spacing={2}>
             <Grid size={8}>
-              <Typography variant="h5" sx={{ textAlign: "right" ,textDecoration: todo.isCompleted ? "line-through" : "none" }}>
+              <Typography
+                variant="h5"
+                sx={{
+                  textAlign: "right",
+                  textDecoration: todo.isCompleted ? "line-through" : "none",
+                }}
+              >
                 {todo.title}
               </Typography>
               <Typography variant="h6" sx={{ textAlign: "right" }}>
